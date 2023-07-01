@@ -65,4 +65,10 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+const PORT = 4000
+
+app.listen(PORT, () => {
+  console.log(`API listening on PORT ${PORT} `)
+})
+
 module.exports = app;
