@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "sqlserver"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {
@@ -72,7 +73,7 @@ model subLevel {
   updatedAt     DateTime      @updatedAt
   // relation to level
   levelId       Int
-  level         Level         @relation(fields: [levelId], references: [id])
+  level         Level         @relation(fields: [levelId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   // relation to exercise
   exercises     exercise[]
   // relation to subSubLevel
@@ -80,22 +81,23 @@ model subLevel {
 }
 
 model subSubLevel {
-  id            Int          @id @default(autoincrement())
+  id            Int      @id @default(autoincrement())
   name          String
-  subTitlte     String       @default("")
-  description   String       @default("")
-  image         String       @default("")
-  status        Boolean      @default(false)
-  requiredScore Int          @default(15)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  subTitlte     String   @default("")
+  description   String   @default("")
+  image         String   @default("")
+  status        Boolean  @default(false)
+  requiredScore Int      @default(15)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
   // relation to subLevel
   subLevelId    Int
-  subLevel      subLevel     @relation(fields: [subLevelId], references: [id])
+  subLevel      subLevel @relation(fields: [subLevelId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+
   // relation to finalLevel
-  finalLevel    finalLevel[]
+  finalLevel finalLevel[]
   // relation to exercise
-  exercises     exercise[]
+  exercises  exercise[]
 }
 
 model finalLevel {
@@ -110,12 +112,12 @@ model finalLevel {
   updatedAt     DateTime    @updatedAt
   // relation to subSubLevel
   subSubLevelId Int
-  subSubLevel   subSubLevel @relation(fields: [subSubLevelId], references: [id])
+  subSubLevel   subSubLevel @relation(fields: [subSubLevelId], references: [id], onUpdate: NoAction, onDelete: NoAction)
   // relation to exercise
   exercises     exercise[]
   // relation to food
   foods         Food[]
-  }
+}
 
 model exercise {
   id           Int         @id @default(autoincrement())
@@ -161,22 +163,22 @@ model Step {
 }
 
 model Question {
-  id        Int            @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   title     String
   image     String
-  type      selectQuestion @default(Written)
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  type      String     @default("Vocal")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   // relation to exercise
   exercises exercise[]
 }
 
-enum selectQuestion {
-  Vocal
-  Written
-  Visual
-  Radio
-}
+// enum selectQuestion {
+//   Vocal
+//   Written
+//   Visual
+//   Radio
+// }
 
 model Advice {
   id        Int        @id @default(autoincrement())
@@ -197,16 +199,15 @@ model AnswerOptions {
 }
 
 model Food {
-  id          Int      @id @default(autoincrement())
-  title       String
-  image       String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           Int        @id @default(autoincrement())
+  title        String
+  image        String
+  description  String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   // relation to finalLevel
   finalLevelId Int
   finalLevel   finalLevel @relation(fields: [finalLevelId], references: [id])
-  
 }
 
 model Disease {

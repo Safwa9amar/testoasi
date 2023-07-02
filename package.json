@@ -6,9 +6,10 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "node ./bin/www",
     "watch": "nodemon --ext js,html,css --ignore public/ ./bin/www",
-    "migration": "prisma migrate dev --name init --preview-feature"
+    "migration": "prisma migrate dev --name init --preview-feature",
+    "db": "prisma migrate dev --preview-feature"
   },
   "dependencies": {
     "@prisma/client": "^4.16.1",

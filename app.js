@@ -21,15 +21,14 @@ var levelRouter = require("./routes/api/V1/level");
 var jobsRouter = require("./routes/api/V1/jobs");
 var disseaseRouter = require("./routes/api/V1/dissease");
 var alarmRouter = require("./routes/api/V1/AlarmClock");
+var testRouter = require("./routes/api/V1/test");
 var app = express();
 app.locals.secretKey = process.env.SECRET_KEY;
 
 app.use(connectLiveReload());
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,11 +42,14 @@ const corsOption = {
 app.use(cors(corsOption));
 
 app.use("/", indexRouter);
+app.use("/healthz", require("./routes/healthz"));
 app.use("/users", usersRouter);
 app.use("/api/v1/level", levelRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/dissease", disseaseRouter);
 app.use("/api/v1/alarm", alarmRouter);
+app.use("/api/v1/test", testRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -64,11 +66,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
-const PORT = 4000
-
-app.listen(PORT, () => {
-  console.log(`API listening on PORT ${PORT} `)
-})
 
 module.exports = app;
