@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'ipsypress'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8BC3EC8621E645569BAE8FB28D001BBF }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D7A2C8EB20614EBDB58C0490CA507488 }}
           package: .
